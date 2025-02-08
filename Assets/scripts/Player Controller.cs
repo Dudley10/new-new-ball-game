@@ -29,7 +29,7 @@ public GameObject winTextObject;
 
     void SetCountText(){
         countText.text = "Count: " + count.ToString();
-        if (count >=27)
+        if (count >=16)
         {
             winTextObject.SetActive(true);
              Destroy(GameObject.FindGameObjectWithTag("Enemy"));
