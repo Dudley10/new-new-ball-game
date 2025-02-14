@@ -11,6 +11,7 @@ private float movementY;
 public float speed = 0;
 public TextMeshProUGUI countText;
 public GameObject winTextObject;
+public AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,6 +42,7 @@ public GameObject winTextObject;
         rb.AddForce(movement * speed);
 }
 void OnTriggerEnter(Collider other){
+    audioSource = GetComponent<AudioSource>();
     if (other.gameObject.CompareTag("PickUp")){
     other.gameObject.SetActive(false);
 }
