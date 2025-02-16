@@ -18,4 +18,5 @@ public class EnemyMovement : MonoBehaviour
         navMeshAgent.SetDestination(player.position);
      }   
     }
+    //collision.gameObject.GetComponent<AudioSource>().Play();
 }
