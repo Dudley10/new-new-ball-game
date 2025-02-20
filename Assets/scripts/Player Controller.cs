@@ -49,6 +49,8 @@ void OnTriggerEnter(Collider other){
     if (other.gameObject.CompareTag("PickUp")){
     other.gameObject.SetActive(false);
     audioSource.Play();
+    var currentPickupFX = Instantiate(pickupFX, other.transform.position, Quaternion.identity);
+    Destroy(currentPickupFX, 3);
 }
 count = count + 1;
 SetCountText();
@@ -56,6 +58,7 @@ SetCountText();
 private void OnCollisionEnter(Collision collision){
     if (collision.gameObject.CompareTag("Enemy")){
         playSound(1);
+        Instantiate(explosionFX, transform.position, Quaternion.identity);
         //Destroy game object
         Destroy(gameObject);
         //Update text to display "you lose"
