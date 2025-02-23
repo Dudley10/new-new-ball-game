@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,8 +12,8 @@ private float movementY;
 public float speed = 0;
 public TextMeshProUGUI countText;
 public GameObject winTextObject;
-public AudioSource audioSource;
-public AudioClip[] sounds;
+public AudioSource[] sounds;
+public GameObject explosionFX;
 //public Transform player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,6 +23,7 @@ public AudioClip[] sounds;
         count = 0;
         SetCountText();
         winTextObject.SetActive(false);
+        sounds = GetComponents<AudioSource>();
     }
     void OnMove(InputValue movementValue) {
         //Function body
@@ -45,22 +47,22 @@ public AudioClip[] sounds;
         rb.AddForce(movement * speed);
 }
 void OnTriggerEnter(Collider other){
-    audioSource = GetComponent<AudioSource>();
+    //audioSource = GetComponent<AudioSource>();
     if (other.gameObject.CompareTag("PickUp")){
     other.gameObject.SetActive(false);
-    audioSource.Play();
-    var currentPickupFX = Instantiate(pickupFX, other.transform.position, Quaternion.identity);
-    Destroy(currentPickupFX, 3);
+    playSound(0);
+    //var currentPickupFX = Instantiate(pickupFX, other.transform.position, Quaternion.identity);
+    //Destroy(currentPickupFX, 3);
 }
 count = count + 1;
 SetCountText();
 }
 private void OnCollisionEnter(Collision collision){
     if (collision.gameObject.CompareTag("Enemy")){
-        playSound(1);
+        StartCoroutine(WaitForSoundAndDestroy(1));
         Instantiate(explosionFX, transform.position, Quaternion.identity);
         //Destroy game object
-        Destroy(gameObject);
+        //Destroy(gameObject);
         //Update text to display "you lose"
         winTextObject.gameObject.SetActive(true);
         winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
@@ -71,11 +73,22 @@ private void OnCollisionEnter(Collision collision){
     
         public void playSound(int index){
         if (index >= 0 && index < sounds.Length){
-            audioSource.clip = sounds[index];
+            AudioSource audioSource = sounds[index];
             audioSource.Play();
         }
         else{Debug.LogWarning("invalid #");}
     }
+
+    private IEnumerator WaitForSoundAndDestroy(int sound){
+        //AudioSource audioSource = GetComponentInChildren<AudioSource>();
+        if (sound >= 0 && sound < sounds.Length){
+        AudioSource audioSource = sounds[sound];
+        audioSource.Play();
+        yield return new WaitForSeconds(audioSource.clip.length);
+        Destroy(gameObject);
+    }
+    }
+
     //public void gameOver(){
     //    if(player = null){
     //        playSound(1);
