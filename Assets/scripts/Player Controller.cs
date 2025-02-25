@@ -14,6 +14,8 @@ public TextMeshProUGUI countText;
 public GameObject winTextObject;
 public AudioSource[] sounds;
 public GameObject explosionFX;
+public GameObject pickupFX;
+public GameObject victoryFX;
 //public Transform player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,6 +41,7 @@ public GameObject explosionFX;
             winTextObject.SetActive(true);
              Destroy(GameObject.FindGameObjectWithTag("Enemy"));
              playSound(2);
+             Instantiate (victoryFX, transform.position, Quaternion.identity);
         }
     }
 
@@ -51,8 +54,8 @@ void OnTriggerEnter(Collider other){
     if (other.gameObject.CompareTag("PickUp")){
     other.gameObject.SetActive(false);
     playSound(0);
-    //var currentPickupFX = Instantiate(pickupFX, other.transform.position, Quaternion.identity);
-    //Destroy(currentPickupFX, 3);
+    var currentPickupFX = Instantiate(pickupFX, other.transform.position, Quaternion.identity);
+    Destroy(currentPickupFX, 3);
 }
 count = count + 1;
 SetCountText();
@@ -60,7 +63,7 @@ SetCountText();
 private void OnCollisionEnter(Collision collision){
     if (collision.gameObject.CompareTag("Enemy")){
         StartCoroutine(WaitForSoundAndDestroy(1));
-        Instantiate(explosionFX, transform.position, Quaternion.identity);
+         Instantiate(explosionFX, transform.position, Quaternion.identity);
         //Destroy game object
         //Destroy(gameObject);
         //Update text to display "you lose"
