@@ -69,6 +69,8 @@ private void OnCollisionEnter(Collision collision){
         //Update text to display "you lose"
         winTextObject.gameObject.SetActive(true);
         winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+        //Set the speed of the enemy's animation to 0
+        collision.gameObject.GetComponentInChildren<Animator>().SetFloat("speed_f", 0);
     }
     //sources = GetComponents()<audioSource>();
     //sources [1].play;
