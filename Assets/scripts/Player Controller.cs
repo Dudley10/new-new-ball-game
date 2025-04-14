@@ -17,6 +17,8 @@ public GameObject explosionFX;
 public GameObject pickupFX;
 public GameObject victoryFX;
 //public Transform player;
+private Vector3 targetPos;
+[SerializeField] private bool isMoving = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,7 +29,29 @@ public GameObject victoryFX;
         winTextObject.SetActive(false);
         sounds = GetComponents<AudioSource>();
     }
-    void OnMove(InputValue movementValue) {
+    //update method for mouse
+    //private void Update() {
+        //if (Input.GetMouseButton(0))
+       // {
+            //Debug.Log("Mouse Clicked");
+           // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+           // Debug.DrawRay(ray.origin, ray.direction * 50, Color.yellow);
+        //}
+          //  RaycastHit hit;
+            // check if raycast hits an object
+          //  if (Physics.Raycast(ray, out hit))
+          //  {
+          //      if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+          //  {
+          //      targetPos = hit.point; //set target pos
+          //      isMoving = true; // start player movement
+          //  }
+       // }
+    
+            
+        
+    
+    void OnMove(InputValue movementValue){
         //Function body
         Vector2 movementVector = movementValue.Get<Vector2>();
         movementX = movementVector.x;
@@ -46,8 +70,20 @@ public GameObject victoryFX;
     }
 
      void FixedUpdate(){
+        //keyboard movement
         Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
         rb.AddForce(movement * speed);
+        //mouse / point and click movement
+        //if (isMoving){
+           // Vector3 direction = targetPos - rb.position;
+            //direction.Normalize();
+            //rb.AddForce(direction * speed);
+        //}
+        //stop moving if close to target position
+        //if (Vector3.Distance(rb.position, targetPos) < 0.5f)
+       // {
+         //   isMoving = false;
+        //}
 }
 void OnTriggerEnter(Collider other){
     //audioSource = GetComponent<AudioSource>();
